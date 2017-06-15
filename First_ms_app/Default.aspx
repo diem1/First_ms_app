@@ -8,5 +8,5 @@
         ID="CompaniesGridView"
         runat="server">
     </asp:GridView>
-    <asp:label id="myLabel" runat="server" />
+
 </asp:Content>
