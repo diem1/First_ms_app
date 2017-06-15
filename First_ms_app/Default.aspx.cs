@@ -33,6 +33,8 @@ namespace First_ms_app
             DataTable CompaniesDataTable = new DataTable();
             CompaniesDataTable.Columns.Add("ID", Type.GetType("System.String"));
             CompaniesDataTable.Columns.Add("Name", Type.GetType("System.String"));
+            CompaniesDataTable.Columns.Add("Address", Type.GetType("System.String"));
+            CompaniesDataTable.Columns.Add("Agent", Type.GetType("System.String"));
 
             while (DataReader.Read())
             {
@@ -40,6 +42,19 @@ namespace First_ms_app
                 int RowNumber = CompaniesDataTable.Rows.Count - 1;
                 CompaniesDataTable.Rows[RowNumber]["ID"] = DataReader["Company_ID"].ToString();
                 CompaniesDataTable.Rows[RowNumber]["Name"] = DataReader["Name"].ToString();
+
+                string Address = DataReader["Address_1"].ToString() + ", " + DataReader["Address_2"].ToString();
+                CompaniesDataTable.Rows[RowNumber]["Address"] = Address;
+
+                string AgentFirstName = DataReader["First_name"].ToString();
+                string AgentLastName = DataReader["Last_name"].ToString();
+                string AgentPhoneNumber = DataReader["Phone_Number"].ToString();
+                string AgentSpecialization = DataReader["Specialization"].ToString();
+                string Agent = AgentFirstName + " " 
+                        + AgentLastName + ", "
+                        + AgentPhoneNumber + ", " 
+                        + AgentSpecialization + ", ";
+                CompaniesDataTable.Rows[RowNumber]["Agent"] = Agent;
             }
 
             SqlConnection.Close();
