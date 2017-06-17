@@ -17,12 +17,18 @@ namespace First_ms_app
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            DataTable CompaniesDataTable = new DataTable();
+            CompaniesDataTable.Columns.Add("ID", Type.GetType("System.String"));
+            CompaniesDataTable.Columns.Add("Name", Type.GetType("System.String"));
+            CompaniesDataTable.Columns.Add("Address", Type.GetType("System.String"));
+            CompaniesDataTable.Columns.Add("Agent", Type.GetType("System.String"));
+            CompaniesDataTable.Columns.Add("Employees", Type.GetType("System.String"));
             string ConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
             SqlConnection SqlConnection = new SqlConnection(ConnectionString);
 
+            // Read Companies
             SqlCommand ReadCompaniesCmd = new SqlCommand();            
-            SqlDataReader CompaniesDataReader;
-            
+            SqlDataReader CompaniesDataReader;            
 
             ReadCompaniesCmd.CommandText = @"SELECT * FROM Companies INNER JOIN Addresses 
                                 ON Companies.Address = Addresses.Address_ID INNER JOIN Employees 
@@ -31,13 +37,6 @@ namespace First_ms_app
             
             SqlConnection.Open();
             CompaniesDataReader = ReadCompaniesCmd.ExecuteReader();          
-
-            DataTable CompaniesDataTable = new DataTable();
-            CompaniesDataTable.Columns.Add("ID", Type.GetType("System.String"));
-            CompaniesDataTable.Columns.Add("Name", Type.GetType("System.String"));
-            CompaniesDataTable.Columns.Add("Address", Type.GetType("System.String"));
-            CompaniesDataTable.Columns.Add("Agent", Type.GetType("System.String"));
-            CompaniesDataTable.Columns.Add("Employees", Type.GetType("System.String"));
 
             while (CompaniesDataReader.Read())
             {
@@ -49,19 +48,19 @@ namespace First_ms_app
                 CompaniesDataTable.Rows[RowNumber]["ID"] = CompanyID;
                 CompaniesDataTable.Rows[RowNumber]["Name"] = CompanyName;
 
-                string Address = CompaniesDataReader["Address_1"].ToString() + ", "
+                string CompanyAddress = CompaniesDataReader["Address_1"].ToString() + ", "
                                     + CompaniesDataReader["Address_2"].ToString();
-                CompaniesDataTable.Rows[RowNumber]["Address"] = Address;
+                CompaniesDataTable.Rows[RowNumber]["Address"] = CompanyAddress;
 
                 string AgentFirstName = CompaniesDataReader["First_name"].ToString();
                 string AgentLastName = CompaniesDataReader["Last_name"].ToString();
                 string AgentPhoneNumber = CompaniesDataReader["Phone_Number"].ToString();
                 string AgentSpecialization = CompaniesDataReader["Specialization"].ToString();
-                string Agent = AgentFirstName + " " 
+                string CompanyAgent = AgentFirstName + " " 
                         + AgentLastName + ", "
                         + AgentPhoneNumber + ", " 
                         + AgentSpecialization + ", ";
-                CompaniesDataTable.Rows[RowNumber]["Agent"] = Agent;
+                CompaniesDataTable.Rows[RowNumber]["Agent"] = CompanyAgent;
             }
             SqlConnection.Close();
 
